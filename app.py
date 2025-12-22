@@ -118,7 +118,7 @@ class CertificateGenerator:
         self.pdf.set_y(-120)
         self.pdf.set_font("helvetica","B",10)
         self.pdf.set_fill_color(255,0,0)
-        self.pdf.cell(170, 5, f"Fire Extinguishers Refilling Date: {data['date']} And Due Date: {due_date}", 
+        self.pdf.cell(0, 5, f"Fire Extinguishers Refilling Date: {data['date']} And Due Date: {due_date}", 
                      border=0, new_x=XPos.LMARGIN, new_y=YPos.NEXT, align='L', fill=True)
         self.pdf.set_text_color(255,0,0)
         self.pdf.cell(0,10,f"MAP-90 Powder Warranty: {data['warranty']} years")
