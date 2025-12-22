@@ -1,16 +1,14 @@
 import streamlit as st
-from fpdf import FPDF, HTMLMixin, XPos, YPos
+from fpdf import FPDF, XPos, YPos
 from datetime import datetime
 from io import BytesIO
 import os
 
-# PDF class with HTML support
-class PDF(FPDF, HTMLMixin):
-    pass
+
 
 class CertificateGenerator:
     def __init__(self):
-        self.pdf = PDF()
+        self.pdf = FPDF()
         self.pdf.add_page()
         self.pdf.set_auto_page_break(auto=True, margin=15)
 
@@ -45,7 +43,10 @@ class CertificateGenerator:
         for i in range(len(data['quantity'])):
             self.pdf.write_html(f"<b>{i+1}. {data['capacity'][i]}: {data['quantity'][i]} NOS</b><br><br>")
         self.footer()
-        return self.pdf.output(dest='S').encode('latin1')
+        pdf_bytes = BytesIO()
+        self.pdf.output(pdf_bytes)
+        pdf_bytes.seek(0)
+        return pdf_bytes.getvalue()
 
     def generate_new_certificate(self, data):
         self.header()
@@ -84,7 +85,10 @@ class CertificateGenerator:
             within the warranty period. The warranty accident results from defective and faulty workmanship.<br><br>
             <b>BILL Number: {data['billNo']}</b>""")
         self.footer()
-        return self.pdf.output(dest='S').encode('latin1')
+        pdf_bytes = BytesIO()
+        self.pdf.output(pdf_bytes)
+        pdf_bytes.seek(0)
+        return pdf_bytes.getvalue()
 
     def generate_refill_certificate(self, data):
         self.header()
@@ -131,7 +135,10 @@ class CertificateGenerator:
                             If any fire extinguisher does not work during this period in any Fire Hazard,
                             we will refill the fire extinguisher free of cost within the said warranty period.""")
         self.footer()
-        return self.pdf.output(dest='S').encode('latin1')
+        pdf_bytes = BytesIO()
+        self.pdf.output(pdf_bytes)
+        pdf_bytes.seek(0)
+        return pdf_bytes.getvalue()
 
 # Streamlit App
 st.set_page_config(page_title="AK Certificate Maker", layout="wide", initial_sidebar_state="expanded")
