@@ -28,7 +28,7 @@ class CertificateGenerator:
         self.header()
         self.pdf.set_font("helvetica", "B", 12)
         self.pdf.set_text_color(211,175,55)
-        self.pdf.cell(0, 10, f"DATED: {data['date']}", new_x=XPos.LMARGIN, new_y=YPos.NEXT, align="R")
+        self.pdf.cell(0, 10, f"DATED: _{data['date']}_", new_x=XPos.LMARGIN, new_y=YPos.NEXT, align="R")
         self.pdf.cell(0,10,"To", new_x=XPos.LMARGIN, new_y=YPos.NEXT)
         self.pdf.set_font("helvetica", "", 10)
         self.pdf.set_text_color(0,0,0)
@@ -38,8 +38,8 @@ class CertificateGenerator:
         self.pdf.write_html(f"""Subject:- <b>Pick up of fire extinguishers for refilling.</b><br><br><br><br><br><br>
                             &nbsp;&nbsp;&nbsp;&nbsp;This letter is to verify that AK ENTERPRISES has picked up <b>{sum(data['quantity'])} FIRE EXTINGUISHER CYLINDERS</b> from <b>{data['name']}</b>  for refilling of the same on <b>{data['date']}</b>. 
                             <br><br><br><br><br><b>Pick Up Details:- <br><br>
-                            Party's Name:- PRADEEP JI<br><br>
-                            Party's address:- SWAROOP NAGAR</b><br><br><br><br>Quantity:""")
+                            Party's Name:- {data['name']}<br><br>
+                            Party's address:- {data['address']}</b><br><br><br><br>Quantity:<br><br>""")
         for i in range(len(data['quantity'])):
             self.pdf.write_html(f"<b>{i+1}. {data['capacity'][i]}: {data['quantity'][i]} NOS</b><br><br>")
         self.footer()
@@ -54,7 +54,7 @@ class CertificateGenerator:
         self.pdf.set_text_color(211,175,55)
         self.pdf.cell(0, 10, "AGNI PRO/ABC/TC", new_x=XPos.LMARGIN, new_y=YPos.NEXT)
         self.pdf.set_font("helvetica", "B", 11)
-        self.pdf.cell(0, 10, f"DATED: {data['date']}", new_x=XPos.LMARGIN, new_y=YPos.NEXT, align="R")
+        self.pdf.cell(0, 10, f"DATED: _{data['date']}_", new_x=XPos.LMARGIN, new_y=YPos.NEXT, align="R")
         self.pdf.set_font("helvetica", "", 10)
         self.pdf.set_text_color(0,0,0)
         self.pdf.write_html(f"""
@@ -96,7 +96,7 @@ class CertificateGenerator:
         self.pdf.set_text_color(211, 175, 55)
         self.pdf.cell(0, 10, "ABC Type Fire Extinguisher Refilling Warranty Certificate", new_x=XPos.LMARGIN, new_y=YPos.NEXT, align="C")
         self.pdf.set_font("helvetica", "B", 11)
-        self.pdf.cell(0, 10, f"DATED: {data['date']}", new_x=XPos.LMARGIN, new_y=YPos.NEXT, align="R")
+        self.pdf.cell(0, 10, f"DATED: _{data['date']}_", new_x=XPos.LMARGIN, new_y=YPos.NEXT, align="R")
         self.pdf.set_font("helvetica", "", 13)
         self.pdf.cell(0, 10, "TO WHOMSOEVER IT MAY CONCERN", new_x=XPos.LMARGIN, new_y=YPos.NEXT)
         self.pdf.ln(5)
