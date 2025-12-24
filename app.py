@@ -70,10 +70,16 @@ class CertificateGenerator:
         self.pdf.write_html(f"""        
             Fire Extinguishers New Date: {data['date']}<br><br>""")
         self.pdf.set_text_color(255,0,0)
-        self.pdf.write_html(f""" 
-            Body warranty: {data['warranty']} years <br><br>
-            MAP Powder warranty: {data['warranty']} years.<br><br>
-            Do Not use the Safety Seal under the warranty period.<br><br>""")
+        if(data['warranty']<3):
+            self.pdf.write_html(f""" 
+                Body warranty: {data['warranty']} years <br><br>
+                MAP-50 Powder warranty: {data['warranty']} years.<br><br>
+                Do Not use the Safety Seal under the warranty period.<br><br>""")
+        else:
+            self.pdf.write_html(f""" 
+                Body warranty: {data['warranty']} years <br><br>
+                MAP-90 Powder warranty: {data['warranty']} years.<br><br>
+                Do Not use the Safety Seal under the warranty period.<br><br>""")
         self.pdf.ln(5)
         self.pdf.set_text_color(0,0,0)
         self.pdf.write_html(f""" 
@@ -125,7 +131,10 @@ class CertificateGenerator:
         self.pdf.cell(0, 5, f"Fire Extinguishers Refilling Date: {data['date']} And Due Date: {due_date}", 
                      border=0, new_x=XPos.LMARGIN, new_y=YPos.NEXT, align='L', fill=True)
         self.pdf.set_text_color(255,0,0)
-        self.pdf.cell(0,10,f"MAP-90 Powder Warranty: {data['warranty']} years")
+        if(data['warranty']<3):
+            self.pdf.cell(0,10,f"MAP-50 Powder Warranty: {data['warranty']} years")
+        else:
+            self.pdf.cell(0,10,f"MAP-90 Powder Warranty: {data['warranty']} years")
         self.pdf.set_text_color(0,0,0)
         self.pdf.set_fill_color(255,255,255)
         self.pdf.cell(0,8,"", border=0, new_x=XPos.LMARGIN, new_y=YPos.NEXT)
@@ -177,7 +186,7 @@ with col2:
         with col_cap:
             capacity = st.selectbox(
                 f"Type {i+1}",
-                ["ABC Type Fire Extinguisher capacity 4Kg", "ABC Type Fire Extinguisher capacity 6Kg", 
+                ["ABC Type Fire Extinguisher capacity 1Kg","ABC Type Fire Extinguisher capacity 2Kg","ABC Type Fire Extinguisher capacity 4Kg", "ABC Type Fire Extinguisher capacity 6Kg", 
                  "ABC Type Fire Extinguisher capacity 9Kg", "ABC Type Fire Extinguisher capacity 12Kg",
                  "CO2 Type Fire Extinguisher capacity 4.5Kg"],
                 index=0, key=f"cap_{i}"
@@ -213,15 +222,16 @@ if st.button("🎯 Generate Certificate PDF", type="primary", use_container_widt
                 
                 if cert_type == 'Refilling':
                     pdf_bytes = gen.generate_refill_certificate(data)
-                    filename = "certificate_refill.pdf"
+                    filename = f"certificate_refill_{billNo}.pdf"
                 elif cert_type == 'New':
                     pdf_bytes = gen.generate_new_certificate(data)
-                    filename = "certificate_new.pdf"
+                    filename = f"certificate_new_{billNo}.pdf"
                 else:  # Pickup
                     pdf_bytes = gen.generate_pickup_certificate(data)
                     filename = "pickup_verification.pdf"
                 
                 st.balloons()
+                
                 st.success(f"✅ {cert_type} certificate generated successfully!")
                 
                 col1, col2 = st.columns(2)
