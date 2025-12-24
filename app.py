@@ -70,7 +70,7 @@ class CertificateGenerator:
         self.pdf.write_html(f"""        
             Fire Extinguishers New Date: {data['date']}<br><br>""")
         self.pdf.set_text_color(255,0,0)
-        if(data['warranty']<3):
+        if(int(data['warranty'])<3):
             self.pdf.write_html(f""" 
                 Body warranty: {data['warranty']} years <br><br>
                 MAP-50 Powder warranty: {data['warranty']} years.<br><br>
@@ -131,7 +131,7 @@ class CertificateGenerator:
         self.pdf.cell(0, 5, f"Fire Extinguishers Refilling Date: {data['date']} And Due Date: {due_date}", 
                      border=0, new_x=XPos.LMARGIN, new_y=YPos.NEXT, align='L', fill=True)
         self.pdf.set_text_color(255,0,0)
-        if(data['warranty']<3):
+        if(int(data['warranty'])<3):
             self.pdf.cell(0,10,f"MAP-50 Powder Warranty: {data['warranty']} years")
         else:
             self.pdf.cell(0,10,f"MAP-90 Powder Warranty: {data['warranty']} years")
@@ -222,10 +222,10 @@ if st.button("🎯 Generate Certificate PDF", type="primary", use_container_widt
                 
                 if cert_type == 'Refilling':
                     pdf_bytes = gen.generate_refill_certificate(data)
-                    filename = f"certificate_refill_{billNo}.pdf"
+                    filename = f"certificate_refill.pdf"
                 elif cert_type == 'New':
                     pdf_bytes = gen.generate_new_certificate(data)
-                    filename = f"certificate_new_{billNo}.pdf"
+                    filename = f"certificate_new.pdf"
                 else:  # Pickup
                     pdf_bytes = gen.generate_pickup_certificate(data)
                     filename = "pickup_verification.pdf"
