@@ -1,5 +1,6 @@
 import streamlit as st
 from fpdf import FPDF, XPos, YPos
+from dateutil.relativedelta import relativedelta
 from datetime import datetime
 from io import BytesIO
 import os
@@ -107,7 +108,7 @@ class CertificateGenerator:
         self.pdf.cell(0, 10, "TO WHOMSOEVER IT MAY CONCERN", new_x=XPos.LMARGIN, new_y=YPos.NEXT)
         self.pdf.ln(5)
         date_obj = datetime.strptime(data['date'], "%d/%m/%Y")
-        due_date_obj = date_obj.replace(year=date_obj.year + int(data['warranty']))
+        due_date_obj = date_obj + relativedelta(years=int(data['warranty'])) - relativedelta(days=1)
         due_date = due_date_obj.strftime("%d/%m/%Y")
         self.pdf.set_font("helvetica", "", 10)
         self.pdf.set_text_color(0, 0, 0)
